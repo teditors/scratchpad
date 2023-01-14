@@ -1,0 +1,52 @@
+[
+    {
+        "classSubject": "Physics",
+        "className": "C1 Physics",
+        "classCode": "0000000",
+        "classColorFamily": "red",
+        "classColor": "#ff8080"
+    },
+    {
+        "classSubject": "Physics",
+        "className": "C1 Physics",
+        "classCode": "0000000",
+        "classColorFamily": "red",
+        "classColor": "#ffb3b3"
+    },
+    {
+        "classSubject": "Science",
+        "className": "Astronomy",
+        "classCode": "0000000",
+        "classColorFamily": "green",
+        "classColor": "#c6ecd9"
+    },
+    {
+        "classSubject": "Science",
+        "className": "CIS",
+        "classCode": "0000000",
+        "classColorFamily": "blue",
+        "classColor": "#b3b3ff"
+    },
+    {
+        "classSubject": "Physics",
+        "className": "C1 Physics",
+        "classCode": "0000000",
+        "classColorFamily": "red",
+        "classColor": "#ffe6e6"
+    },
+    {
+        "classSubject": null,
+        "className": null,
+        "classCode": "0000000"
+    },
+    {
+        "classSubject": null,
+        "className": null,
+        "classCode": "0000000"
+    },
+    {
+        "classSubject": "Flex",
+        "className": null,
+        "classCode": "0000000"
+    }
+]
