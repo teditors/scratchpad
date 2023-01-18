@@ -21,6 +21,14 @@ async function getRotationData() {
     return await response.json();
 }
 
+async function getClassData() {
+    const url = 'classes.json';
+    const response = await fetch(url);
+    return await response.json();
+}
+
+
+
 async function getWeatherData(lat, lon) {
     const url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=' + OpenWeatherAPI + '&units=imperial';
     const response = await fetch(url);
@@ -72,117 +80,33 @@ function drawHeaderMaterial(calendar) {
     document.getElementById("date").textContent = nameOfMonthAsString(date.getMonth()) + " " + date.getDate();
 }
 
-/* function renderLinkIcon(node) {
-    const iconSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const iconPath = document.createElementNS(
-        'http://www.w3.org/2000/svg',
-        'path'
-    );
-
-    iconSvg.setAttribute('fill', 'none');
-    iconSvg.setAttribute('viewBox', '0 0 24 24');
-    iconSvg.setAttribute('stroke', 'black');
-    iconSvg.classList.add('post-icon');
-
-    iconPath.setAttribute(
-        'd',
-        'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1'
-    );
-    iconPath.setAttribute('stroke-linecap', 'round');
-    iconPath.setAttribute('stroke-linejoin', 'round');
-    iconPath.setAttribute('stroke-width', '2');
-
-    iconSvg.appendChild(iconPath);
-
-    return node.appendChild(iconSvg);
-}
-
-function renderScheduleBar(node) {
-    const scheduleSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const schedulePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-    scheduleSvg.setAttribute('fill', 'none');
-    scheduleSvg.setAttribute('viewBox', '0 0 200 50');
-    scheduleSvg.setAttribute('stroke', 'black');
-    scheduleSvg.classList.add('post-schedule');
-
-    schedulePath.setAttribute(
-        'd',
-        'M200,0 L200,50 L0,50 L0,0 Z'
-    );
-
-    schedulePath.setAttribute('stroke-linecap', 'round');
-    schedulePath.setAttribute('stroke-linejoin', 'round');
-    schedulePath.setAttribute('stroke-width', '1');
-
-    scheduleSvg.appendChild(schedulePath);
-
-    return node.appendChild(scheduleSvg);
-} */
-
 function dayOfWeekAsString(dayIndex) {
     return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dayIndex];
 }
 
-/* function renderPosts(app, posts) {
-    const postNodes = posts.map((post) => {
-        // Create the DOM elements
-        const postCard = document.createElement('div');
-        const postHeader = document.createElement('div');
-        const postTitleAnchor = document.createElement('a');
-        const postScheduleAnchor = document.createElement('a');
-        const postTitle = document.createElement('h2');
-        const postText = document.createElement('p');
+function getRotationElements(P1, P2, P3, P4, P5) {
+    periods = nameOfPeriodFromIndex(P1) + " | " + nameOfPeriodFromIndex(P2) + " | " + nameOfPeriodFromIndex(P3) + " | " + nameOfPeriodFromIndex(P4) + " | " + nameOfPeriodFromIndex(P5)
 
-        // Add some classes and attributes
-        postCard.classList.add('post-card');
-        postHeader.classList.add('post-header');
-        postTitle.classList.add('post-title')
-        postTitle.id = post.date;
-        postTitleAnchor.href = '#' + post.date;
-        postScheduleAnchor.href = '#' + post.date;
-
-        // Place the text content
-        postTitle.textContent = post.date;
-        postText.textContent = dayOfWeekAsString(post.dayOfWeek + 1);
-
-        // TODO: Add the icon here
-        renderLinkIcon(postTitleAnchor);
-        renderScheduleBar(postScheduleAnchor);
-
-        // Put together the DOM nodes
-        postHeader.appendChild(postTitleAnchor)
-        postHeader.appendChild(postTitle);
-        postCard.appendChild(postHeader);
-        postCard.appendChild(postText);
-        postCard.appendChild(postScheduleAnchor);
-        app.appendChild(postCard);
-
-        return postCard;
-    });
-    return postNodes;
+    return periods
+}
+function getClassElements(cla, P1, P2, P3, P4, P5) {
+    classes = cla[P1].className + " | " + cla[P2].className + " | " + cla[P3].className + " | " + cla[P4].className + " | " + cla[P5].className
+    return classes
 }
 
-async function mountPosts() {
-    const app = document.querySelector('#posts');
-    const cal = await getCalendarData();
-    renderPosts(app, cal);
-} */
-
-function getRotationElements(rotation, rotIndex) {
-    rot = nameOfPeriodFromIndex(rotation[rotIndex]['P1']) + " | " + nameOfPeriodFromIndex(rotation[rotIndex]['P2']) + " | " + nameOfPeriodFromIndex(rotation[rotIndex]['P3']) + " | " + nameOfPeriodFromIndex(rotation[rotIndex]['P4']) + " | " + nameOfPeriodFromIndex(rotation[rotIndex]['P5'])
-    return rot
-}
-
-function drawRotationMaterial(calendar, rotation) {
-    if (calendar[dateDiffInDays(dayZero, date)]['schedule'] != 0) {
+function drawRotationMaterial(calendar, rotation, classes) {
+    if (calendar[dateDiffInDays(dayZero, date)]['schedule'] === 0) {
         console.log("schedule loading")
         document.getElementById("daily-schedule").textContent = "no school";
     } else {
-        let rotIndex = calendar[dateDiffInDays(dayZero, date)]['Day 1-8'];
-        console.log(rotIndex)
-        console.log(rotation[rotIndex])
-        document.getElementById("daily-schedule").textContent = getRotationElements(rotation, rotIndex);
+        let rotIndex = calendar[dateDiffInDays(dayZero, date)]['Day 1-8'] - 1;
+        P1 = rotation[rotIndex]['P1']
+        P2 = rotation[rotIndex]['P2']
+        P3 = rotation[rotIndex]['P3']
+        P4 = rotation[rotIndex]['P4']
+        P5 = rotation[rotIndex]['P5']
+        document.getElementById("daily-schedule").textContent = getRotationElements(P1, P2, P3, P4, P5);
+        document.getElementById("daily-classes").textContent = getClassElements(classes, P1, P2, P3, P4, P5)
     }
 }
 
@@ -197,8 +121,8 @@ async function mountHeader() {
 async function mountDailySchedule() {
     const cal = await getCalendarData();
     const rot = await getRotationData();
-    drawRotationMaterial(cal, rot);
+    const cla = await getClassData();
+    drawRotationMaterial(cal, rot, cla);
 }
 mountHeader();
 mountDailySchedule();
-// mountPosts();
